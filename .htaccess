@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Verifica se o arquivo ou diretório existe antes de redirecionar
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redireciona para a pasta public
+RewriteRule ^(.*)$ public/$1 [L]
