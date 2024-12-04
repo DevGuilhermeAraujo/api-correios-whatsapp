@@ -1,40 +1,48 @@
-// Função para chamar a página apiCall.php e enviarDados.php
-function chamarApi() {
-    // Obtém a hora atual do servidor
-    const agora = new Date(); // Assume que a hora do servidor está sincronizada
-    const hora = agora.getHours(); // Obtém a hora atual (0-23)
+function chamarEndpoint(url, sucesso, erro) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(`[${new Date().toISOString()}] ${sucesso}`, data);
+        })
+        .catch(error => {
+            console.error(`[${new Date().toISOString()}] ${erro}`, error);
+        });
+}
 
-    // Verifica se está entre 5h e 19h para chamar apiCall.php
-    if (hora >= 5 && hora < 19) {
-        fetch('apiCall.php')
-            .then(response => response.text()) // Assume que a resposta seja texto
-            .then(data => {
-                console.log('API chamada executada: ', data); // Exibe a resposta no console
-            })
-            .catch(error => {
-                console.error('Erro ao chamar API:', error);
-            });
+function estaNoIntervalo(hora, inicio, fim) {
+    return hora >= inicio && hora < fim;
+}
+
+function chamarApi() {
+    const agora = new Date();
+    const hora = agora.getHours();
+
+    if (estaNoIntervalo(hora, 5, 19)) {
+        chamarEndpoint(
+            'apiCall.php',
+            'API chamada executada:',
+            'Erro ao chamar API:'
+        );
     } else {
-        console.log(`API não chamada: horário fora do intervalo permitido (${hora}h).`);
+        console.log(`[${new Date().toISOString()}] API não chamada: horário fora do intervalo permitido (${hora}h).`);
     }
 
-    // Verifica se está entre 15h e 17h para chamar enviarDados.php
-    if (hora >= 15 && hora < 17) {
-        fetch('enviarDados.php')
-            .then(response => response.text()) // Assume que a resposta seja texto
-            .then(data => {
-                console.log('Dados enviados: ', data); // Exibe a resposta no console
-            })
-            .catch(error => {
-                console.error('Erro ao chamar enviarDados:', error);
-            });
+    if (estaNoIntervalo(hora, 15, 17)) {
+        chamarEndpoint(
+            'enviarDados.php',
+            'Dados enviados:',
+            'Erro ao chamar enviarDados:'
+        );
     } else {
-        console.log(`Dados não enviados: horário fora do intervalo permitido (${hora}h).`);
+        console.log(`[${new Date().toISOString()}] Dados não enviados: horário fora do intervalo permitido (${hora}h).`);
     }
 }
 
-// Chama a API imediatamente quando a página carrega
+// Executa imediatamente e a cada 15 minutos
 chamarApi();
-
-// Chama a API a cada 15 minutos (900000 ms)
-setInterval(chamarApi, 900000); // 900000 ms = 15 minutos
+//setInterval(chamarApi, 15 * 60 * 1000);

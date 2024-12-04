@@ -1,6 +1,6 @@
-CREATE TABLE rastreioApi(
+CREATE TABLE rastreioapi(
     id INT PRIMARY KEY AUTO_INCREMENT,
-	destinatario VARCHAR(50),
+	destinatario TEXT,
     codRastreio VARCHAR(13),
     numeroTelefone VARCHAR(14),
 	nomeProduto VARCHAR(50),
@@ -9,7 +9,7 @@ CREATE TABLE rastreioApi(
     statusPostadoHora DATETIME,
     statusEntregaHora DATETIME,
     lastUpdate DATETIME
-    )
+    );
 	
 CREATE TABLE correiosToken (
     id INT AUTO_INCREMENT PRIMARY KEY,

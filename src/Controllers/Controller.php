@@ -116,6 +116,7 @@ class Controller
 
         if ($parametros['statusPostado'] == 0 && stripos($descricao, 'postado') !== false) {
             $mensagem .= "Em breve voltamos com atualização da entrega.\n";
+            $mensagem .= "Segue uma pesquisa para avaliar nosso atendimento https://forms.office.com/r/mEieYinYNM.\n";
         }
         $mensagem .= "Caso tenha alguma dúvida sobre o processo de entrega, entre em contato com o número (34) 98852-6101!\n";
         $mensagem .= "☢ Usina, a Marca em que você confia! ☢";
